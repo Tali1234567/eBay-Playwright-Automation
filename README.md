@@ -20,8 +20,6 @@ The framework uses the Page Object Model (POM) design pattern to separate test l
 
 ## Project Structure
 
-## Project Structure
-
 ```text
 project/
 │
@@ -66,6 +64,7 @@ Test parameters are maintained in `data/test_data.yaml`, allowing test data to b
 
 Example configuration:
 
+```yaml
 test:
   name: "eBay product search and cart validation"
 
@@ -78,7 +77,7 @@ test:
     budget_per_item: 220
 
 website:
-  base_url: "https://www.ebay.com"
+  base_url: "[https://www.ebay.com](https://www.ebay.com)"
 
 browser:
   headless: false
@@ -88,7 +87,7 @@ execution:
   screenshot_on_success: true
   screenshot_on_failure: true
   trace: true
-
+```
 
 ## Prerequisites
 
@@ -102,25 +101,42 @@ Before running the project, make sure the following are installed:
 ## Installation
 
 1. Clone the repository:
-git clone https://github.com/Tali1234567/eBay-Playwright-Automation.git
+
+   ```bash
+   git clone [https://github.com/Tali1234567/eBay-Playwright-Automation.git](https://github.com/Tali1234567/eBay-Playwright-Automation.git)
+   ```
 
 2. Navigate to the project directory:
-cd <PROJECT_DIRECTORY>
+
+   ```bash
+   cd <PROJECT_DIRECTORY>
+   ```
 
 3. Install the required Python dependencies:
-pip install -r requirements.txt
+
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 4. Install the Playwright Chromium browser:
-playwright install chromium
 
+   ```bash
+   playwright install chromium
+   ```
 
 ## Running the Tests
 
 Run the tests using:
+
+```bash
 pytest -v
+```
 
 To run a specific test:
+
+```bash
 pytest -v tests/test_e2e_cart.py
+```
 
 The browser runs in headed mode by default. This can be changed in `data/test_data.yaml`.
 
@@ -148,10 +164,16 @@ The project includes support for generating test execution reports in Allure and
 ### Allure Report
 
 Run the tests and generate Allure results:
+
+```bash
 pytest -v --alluredir=reports/allure-results --clean-alluredir
+```
 
 Open the Allure report:
+
+```bash
 allure serve reports/allure-results
+```
 
 Screenshots and Playwright traces are attached to the Allure report when enabled in the YAML configuration.
 
@@ -160,15 +182,24 @@ Screenshots and Playwright traces are attached to the Allure report when enabled
 ### HTML Report
 
 Install the HTML reporting plugin if it is not already included in `requirements.txt`:
+
+```bash
 pip install pytest-html
+```
 
 Run:
+
+```bash
 pytest --html=reports/report.html --self-contained-html
+```
 
 ### JUnit XML Report
 
 Run:
+
+```bash
 pytest --junitxml=reports/junit.xml
+```
 
 JUnit XML can be used by CI/CD systems to collect and display test results.
 
