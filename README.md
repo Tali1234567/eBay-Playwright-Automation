@@ -77,7 +77,7 @@ test:
     budget_per_item: 220
 
 website:
-  base_url: "[https://www.ebay.com](https://www.ebay.com)"
+  base_url: "https://www.ebay.com"
 
 browser:
   headless: false
@@ -103,7 +103,7 @@ Before running the project, make sure the following are installed:
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/Tali1234567/eBay-Playwright-Automation.git](https://github.com/Tali1234567/eBay-Playwright-Automation.git)
+   git clone https://github.com/Tali1234567/eBay-Playwright-Automation.git
    ```
 
 2. Navigate to the project directory:
