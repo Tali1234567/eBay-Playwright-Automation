@@ -1,0 +1,18 @@
+# Virtual Environment
+venv313/
+
+# Python cache
+__pycache__/
+.pytest_cache/
+
+# Allure
+allure-results/
+
+# Screenshots
+reports/screenshots/
+
+# VS Code
+.vscode/
+
+# Reports
+reports/

@@ -1,0 +1,28 @@
+# Test scenario configuration
+test:
+  name: "eBay product search and cart validation"
+
+  # Search parameters
+  search:
+    query: "shoes"       # Product name to search
+    max_price: 220       # Maximum allowed price
+    limit: 5             # Maximum number of products to collect
+
+  # Shopping cart parameters
+  cart:
+    budget_per_item: 220 # Maximum budget per item
+
+# Website configuration
+website:
+  base_url: "https://www.ebay.com"
+
+# Browser configuration
+browser:
+  headless: false        # Show or hide browser window
+  timeout: 30000         # Maximum timeout in milliseconds
+
+# Test execution settings
+execution:
+  screenshot_on_success: true
+  screenshot_on_failure: true
+  trace: true
