@@ -20,6 +20,9 @@ The framework uses the Page Object Model (POM) design pattern to separate test l
 
 ## Project Structure
 
+## Project Structure
+
+```text
 project/
 │
 ├── data/
@@ -42,7 +45,7 @@ project/
 ├── requirements.txt
 ├── pytest.ini
 └── README.md
-
+```
 
 ## Framework Architecture
 
@@ -140,7 +143,7 @@ The main E2E test performs the following steps:
 
 ## Test Reports and Execution Artifacts
 
-The project supports multiple reporting formats.
+The project includes support for generating test execution reports in Allure and JUnit XML formats. HTML reporting is also available through the optional pytest-html plugin.
 
 ### Allure Report
 
