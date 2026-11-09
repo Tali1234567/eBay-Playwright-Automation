@@ -16,3 +16,6 @@ reports/screenshots/
 
 # Reports
 reports/
+
+# Env
+.env

@@ -2,11 +2,13 @@
 
 ## Project Overview
 
-This project is an end-to-end (E2E) test automation framework built with Python, Playwright, and Pytest.
+This project is an End-to-End (E2E) test automation framework developed using Python, Playwright, and Pytest.
 
-The project automates an eBay shopping workflow, including product search, price filtering, collecting product URLs, adding selected products to the shopping cart, and validating the cart subtotal against a predefined budget.
+The project automates an eBay shopping workflow, including user authentication, product search, price filtering, collecting product URLs, adding selected products to the shopping cart, and validating the cart subtotal against a predefined budget.
 
-The framework uses the Page Object Model (POM) design pattern to separate test logic from page-specific actions and locators.
+The framework follows the Page Object Model (POM) design pattern, separating test scenarios, page-specific actions, locators, and test configuration.
+
+The project was developed as a practical automation exercise, including implementation, debugging, troubleshooting, and investigation of eBay Production and Sandbox environments.
 
 ## Technologies
 
@@ -15,52 +17,62 @@ The framework uses the Page Object Model (POM) design pattern to separate test l
 - **Pytest** – Test execution and assertions
 - **Pytest-Asyncio** – Asynchronous test support
 - **PyYAML** – Test configuration and data management
-- **Allure** – Test execution reports and attachments
+- **Allure** – Test execution reporting
 - **Git** – Version control
 
 ## Project Structure
 
 ```text
-project/
+
+Ebay-Automation/
 │
 ├── data/
 │   └── test_data.yaml
 │
 ├── pages/
 │   ├── base_page.py
-│   ├── search_page.py
-│   ├── product_page.py
 │   ├── cart_page.py
-│   └── login_page.py
+│   ├── login_page.py
+│   ├── product_page.py
+│   └── search_page.py
 │
 ├── tests/
 │   ├── conftest.py
 │   └── test_e2e_cart.py
 │
 ├── utils/
-│   └── config_reader.py
+│   ├── config_reader.py
+│   └── screenshot_helper.py
 │
-├── requirements.txt
+├── allure-results/
+├── screenshots/
+├── traces/
+│
+├── .env
+├── .env.example
+├── .gitignore
 ├── pytest.ini
-└── README.md
+├── README.md
+├── ReadMeAIBugs.md
+└── requirements.txt
 ```
 
 ## Framework Architecture
 
 The project follows the Page Object Model (POM) design pattern.
 
-- **BasePage** – Contains shared page functionality and common popup handling.
+- **BasePage** – Provides shared page functionality and common popup handling.
+- **LoginPage** – Implements the eBay login flow, including entering user credentials and handling additional authentication-related dialogs where applicable.
 - **SearchPage** – Handles product searches, price filtering, product information extraction, and navigation between search result pages.
-- **ProductPage** – Handles navigation to product pages and adding products to the shopping cart.
-- **CartPage** – Handles cart navigation and subtotal validation.
-- **LoginPage** – Contains the eBay login flow implementation. It is not currently integrated into the main E2E test due to additional eBay security verification requirements.
-- **ConfigReader** – Loads test configuration from the YAML file.
-- **conftest.py** – Provides the browser fixture, initializes Playwright, configures the browser context, registers the shared popup handler, and manages screenshots and traces.
-- **test_e2e_cart.py** – Contains the main end-to-end test scenario.
+- **ProductPage** – Handles product page navigation and adding products to the shopping cart.
+- **CartPage** – Handles cart navigation and subtotal extraction and validation.
+- **ConfigReader** – Loads test configuration and test data from the YAML file.
+- **conftest.py** – Provides the browser fixture, initializes Playwright, configures the browser context, registers shared popup handling, and manages screenshots and traces.
+- **test_e2e_cart.py** – Contains the main E2E test scenario and coordinates the different Page Objects.
 
 ## Test Configuration
 
-Test parameters are maintained in `data/test_data.yaml`, allowing test data to be changed without modifying the test implementation.
+Test parameters are maintained in `data/test_data.yaml`, allowing test data to be modified without changing the test implementation.
 
 Example configuration:
 
@@ -77,7 +89,7 @@ test:
     budget_per_item: 220
 
 website:
-  base_url: "https://www.ebay.com"
+  base_url: "https://sandbox.ebay.com/"
 
 browser:
   headless: false
@@ -89,99 +101,111 @@ execution:
   trace: true
 ```
 
-## Prerequisites
+## Setup and Execution
 
-Before running the project, make sure the following are installed:
+### Requirements
 
 - Python 3.10 or higher
+- Git
 - pip
-- Playwright-supported browsers
-- Allure Commandline (required only for viewing Allure reports)
+- Playwright
+- Chromium browser
+- An eBay Sandbox account (if authentication is required)
 
-## Installation
+### Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/Tali1234567/eBay-Playwright-Automation.git
-   ```
+```bash
+git clone https://github.com/Tali1234567/eBay-Playwright-Automation.git
+cd Ebay-Automation
+```
 
-2. Navigate to the project directory:
+2. Create and activate a virtual environment:
 
-   ```bash
-   cd <PROJECT_DIRECTORY>
-   ```
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-3. Install the required Python dependencies:
+3. Install dependencies:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
-4. Install the Playwright Chromium browser:
+4. Install the Chromium browser:
 
-   ```bash
-   playwright install chromium
-   ```
+```bash
+playwright install chromium
+```
 
-## Running the Tests
+5. Create a `.env` file in the project root directory using `.env.example` as a reference.
 
-Run the tests using:
+6. Configure the required environment variables and test settings.
+
+### Running the Tests
+
+Run the complete test suite:
 
 ```bash
 pytest -v
 ```
 
-To run a specific test:
+Run the main E2E test:
 
 ```bash
 pytest -v tests/test_e2e_cart.py
 ```
 
-The browser runs in headed mode by default. This can be changed in `data/test_data.yaml`.
+**Note:** Full end-to-end execution has not yet been successfully verified due to an issue encountered during the eBay Sandbox login stage. Results may vary depending on the availability and behavior of the eBay testing environment.
 
 ## Test Scenario
 
-The main E2E test performs the following steps:
+The main E2E test is designed to perform the following steps:
 
 1. Launches the Chromium browser.
-2. Navigates to eBay.
-3. Loads the test parameters from the YAML configuration file.
-4. Searches for products using the configured search query.
-5. Applies the maximum price filter when available.
-6. Collects product URLs that match the configured price limit.
-7. Verifies that at least one product was found.
-8. Verifies that the number of collected products does not exceed the configured limit.
-9. Validates that the collected URLs are valid.
-10. Navigates to each selected product page and attempts to add the product to the shopping cart.
-11. Opens the shopping cart.
-12. Extracts the cart subtotal and validates that it does not exceed the configured budget.
+2. Navigates to the configured eBay environment.
+3. Loads test parameters and credentials.
+4. Initializes the login process.
+5. Handles the account selection screen when applicable.
+6. Enters the username and password.
+7. Handles additional authentication dialogs when applicable.
+8. Searches for products using the configured search query.
+9. Applies the maximum price filter when available.
+10. Collects product URLs matching the configured price limit.
+11. Verifies that at least one product was found.
+12. Verifies that the number of collected products does not exceed the configured limit.
+13. Validates the collected product URLs.
+14. Navigates to each selected product page and attempts to add the product to the shopping cart.
+15. Opens the shopping cart.
+16. Extracts the cart subtotal and validates it against the configured budget.
+
+**Execution status:** The scenario and its individual components have been implemented, but a complete successful execution of the entire workflow has not yet been verified.
 
 ## Test Reports and Execution Artifacts
 
-The project includes support for generating test execution reports in Allure and JUnit XML formats. HTML reporting is also available through the optional pytest-html plugin.
+The framework is configured to support test execution reports and debugging artifacts.
 
 ### Allure Report
 
-Run the tests and generate Allure results:
+Generate Allure results:
 
 ```bash
 pytest -v --alluredir=reports/allure-results --clean-alluredir
 ```
 
-Open the Allure report:
+Open the report:
 
 ```bash
 allure serve reports/allure-results
 ```
 
-Screenshots and Playwright traces are attached to the Allure report when enabled in the YAML configuration.
-
-**Note:** The Allure Python package and Allure Commandline must be installed separately.
+The Allure Python package and Allure Commandline must be installed separately.
 
 ### HTML Report
 
-Install the HTML reporting plugin if it is not already included in `requirements.txt`:
+Install the optional HTML reporting plugin:
 
 ```bash
 pip install pytest-html
@@ -201,67 +225,75 @@ Run:
 pytest --junitxml=reports/junit.xml
 ```
 
-JUnit XML can be used by CI/CD systems to collect and display test results.
+JUnit XML reports can be integrated into CI/CD systems.
 
-## Screenshots and Playwright Traces
+### Screenshots and Playwright Traces
 
-The framework supports automatic screenshot capture based on the test execution result and configuration.
+The framework includes configurable screenshot capture and Playwright tracing for debugging purposes.
 
-Playwright tracing can also be enabled to capture browser activity, including:
+Tracing can capture:
 
 - Browser actions
 - DOM snapshots
 - Screenshots
 - Source information
 
-Trace files are saved under `reports/traces/`.
+Trace files are configured to be saved under `reports/traces/`.
 
-These artifacts can help investigate failures and understand the browser's behavior during test execution.
+These artifacts can help investigate failures and analyze browser behavior during test execution.
 
-## Authentication – Known Limitation
+## Authentication – Implementation Status
 
-A dedicated `LoginPage` class contains the eBay login flow implementation.
+A dedicated `LoginPage` class implements the eBay authentication flow.
 
-However, the login flow is not currently integrated into the main E2E test scenario because eBay may require additional security verification, such as email or SMS verification.
+Unlike the initial implementation, the login process has been integrated into the main E2E test scenario.
 
-This prevents the login process from being reliably automated in the current implementation.
+However, successful authentication has not yet been verified.
+
+During the latest execution against the eBay Sandbox environment, the browser displayed an error page instead of the expected login form.
+
+As a result, Playwright timed out while attempting to locate the username input field.
+
+Although the eBay credentials were successfully loaded by the project, the execution did not reach the stage of entering the username or password.
+
+Therefore, the current failure does not establish whether the credentials themselves are valid.
 
 ## Known Limitations and Environment Constraints
 
-### eBay Production Website Restrictions
+### eBay Production Website
 
-During development, it became apparent that eBay's production website may restrict automated browser activity.
+During development, automation against eBay's Production website presented challenges, including restrictions on automated browser activity.
 
-As a result, full and repeatable E2E execution against the production website could not be reliably verified.
-
-These restrictions may affect navigation and other automated actions.
-
-### Locator Validation Status
-
-Not all page elements and locators have been fully validated through successful test execution.
-
-Due to eBay's restrictions on automated browser activity and additional security verification, some locators and interactions could not be verified in a complete end-to-end run.
-
-Further validation is required to ensure compatibility with the current website structure.
+These restrictions affected the ability to achieve a reliable and repeatable end-to-end execution.
 
 ### eBay Sandbox Environment
 
-The project was initially developed against eBay's production website.
+During development, I identified eBay's dedicated Sandbox environment for developers and testing.
 
-Only at a later stage of development did I identify that eBay provides a dedicated Sandbox environment for developers and testing.
+The project was subsequently configured to attempt execution against the Sandbox environment.
 
-The Sandbox environment is designed for testing eBay functionalities using separate test accounts and simulated data. However, it also has limitations, and not all Production website features are fully supported. In particular, product search and shopping cart functionality may have limitations.
+However, the latest execution encountered an error page during the login stage, preventing the test from proceeding.
 
-Therefore, switching to the Sandbox environment would not necessarily resolve all the automation challenges encountered during this project.
+The Sandbox environment is designed for testing eBay functionalities using separate test accounts and simulated data. It may also have limitations compared with the Production website, particularly regarding product search and shopping cart functionality.
 
-Migration to the Sandbox environment was not completed as part of this project.
+Further investigation is required to establish a reliable execution environment.
+
+### Locator and End-to-End Validation
+
+Not all page elements, locators, and interactions have been fully validated through successful execution.
+
+The latest execution stopped at the login stage, before the product search and shopping cart steps could be tested as part of a complete E2E run.
+
+Further validation is required to confirm compatibility with the current website structure and behavior.
 
 ## Future Improvements
 
-- Migrate the tests to eBay's Sandbox environment.
-- Integrate a reliable authentication mechanism where supported.
+- Investigate and resolve the Sandbox login issue.
+- Establish a reliable and repeatable test environment.
+- Complete a successful end-to-end execution.
+- Validate all page locators and browser interactions.
 - Improve product selection to handle different product variations.
-- Add validation that confirms each selected product was successfully added to the cart.
+- Add explicit validation that each selected product was successfully added to the cart.
 - Improve price extraction to support different price formats and currencies.
 - Integrate the test suite into a CI/CD pipeline.
 

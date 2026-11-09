@@ -1,15 +1,25 @@
-
 import re
+import os
 from pathlib import Path
 
 import allure
 import pytest
 import pytest_asyncio
 from playwright.async_api import async_playwright
+from dotenv import load_dotenv
 
 from utils.config_reader import ConfigReader
 from pages.base_page import BasePage
 
+# Load environment variables from .env
+load_dotenv()
+
+# Verify that eBay credentials were loaded
+assert os.getenv("EBAY_APP_ID"), "EBAY_APP_ID is missing"
+assert os.getenv("EBAY_CERT_ID"), "EBAY_CERT_ID is missing"
+assert os.getenv("EBAY_DEV_ID"), "EBAY_DEV_ID is missing"
+
+print("eBay credentials loaded successfully")
 
 # Save the result of each test phase.
 @pytest.hookimpl(hookwrapper=True)

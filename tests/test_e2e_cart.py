@@ -1,6 +1,7 @@
-
+import os
 import pytest
 
+from pages.login_page import LoginPage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
@@ -14,8 +15,21 @@ async def test_search_products_and_validate_cart(browser_page):
     # Load test data from YAML
     config = ConfigReader.load_test_data()
 
-    # Navigate to eBay
+    # Navigate to eBay Sandbox
     await browser_page.goto(config["website"]["base_url"])
+
+    # Load Sandbox credentials from environment variables
+    username = os.getenv("EBAY_SANDBOX_USERNAME")
+    password = os.getenv("EBAY_SANDBOX_PASSWORD")
+
+    assert username, "EBAY_SANDBOX_USERNAME is missing"
+    assert password, "EBAY_SANDBOX_PASSWORD is missing"
+
+    # Create LoginPage object
+    login_page = LoginPage(browser_page)
+
+    # Sign in with Sandbox test user
+    await login_page.login(username, password)
 
     # Create SearchPage object
     search_page = SearchPage(browser_page)

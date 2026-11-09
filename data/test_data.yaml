@@ -14,7 +14,7 @@ test:
 
 # Website configuration
 website:
-  base_url: "https://www.ebay.com"
+  base_url: "https://sandbox.ebay.com/"
 
 # Browser configuration
 browser:
