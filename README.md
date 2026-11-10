@@ -197,40 +197,20 @@ View the report:
 ```bash
 allure serve reports/allure-results
 ```
+### How to View the Allure Report
 
-**Submitted report:** The report of the last run is included as `allure-report.zip`. To view it, extract the ZIP into a folder and run:
+1. Download `allure-report.zip` from the GitHub repository.
+2. Extract the ZIP file.
+3. Open PowerShell in the extracted `allure-report` folder.
+4. Run the following command:
 
-```bash
-allure open <extracted-folder>
+```powershell
+allure open .
 ```
 
-Do not open `index.html` directly. The browser blocks loading the data files, and the page appears empty.
+5. The Allure report will open automatically in your default web browser.
 
-Allure Commandline requires Java and is installed separately (`npm install -g allure-commandline`).
-
-### HTML Report
-
-Install the optional HTML reporting plugin:
-
-```bash
-pip install pytest-html
-```
-
-Run:
-
-```bash
-pytest --html=reports/report.html --self-contained-html
-```
-
-### JUnit XML Report
-
-Run:
-
-```bash
-pytest --junitxml=reports/junit.xml
-```
-
-JUnit XML reports can be integrated into CI/CD systems.
+The report displays the actual test execution results, including test status and available attachments.
 
 ### Screenshots and Playwright Traces
 
