@@ -1,5 +1,5 @@
 # Virtual Environment
-venv313/
+venv*/
 
 # Python cache
 __pycache__/
@@ -8,14 +8,8 @@ __pycache__/
 # Allure
 allure-results/
 
-# Screenshots
-reports/screenshots/
-
 # VS Code
 .vscode/
-
-# Reports
-reports/
 
 # Env
 .env

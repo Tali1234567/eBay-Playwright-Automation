@@ -25,30 +25,24 @@ The project was developed as a practical automation exercise, including implemen
 ```text
 
 Ebay-Automation/
-│
 ├── data/
 │   └── test_data.yaml
-│
 ├── pages/
 │   ├── base_page.py
 │   ├── cart_page.py
 │   ├── login_page.py
 │   ├── product_page.py
 │   └── search_page.py
-│
 ├── tests/
 │   ├── conftest.py
 │   └── test_e2e_cart.py
-│
 ├── utils/
-│   ├── config_reader.py
-│   └── screenshot_helper.py
-│
-├── allure-results/
-├── screenshots/
-├── traces/
-│
-├── .env
+│   └── config_reader.py
+├── reports/
+│   ├── screenshots/
+│   ├── traces/
+│   └── allure-results/
+├── allure-report.zip
 ├── .env.example
 ├── .gitignore
 ├── pytest.ini
@@ -110,6 +104,9 @@ execution:
 - pip
 - Playwright
 - Chromium browser
+- Java (required by Allure Commandline)
+- Node.js (used to install Allure Commandline)
+- Allure Commandline: `npm install -g allure-commandline`
 - An eBay Sandbox account (if authentication is required)
 
 ### Installation
@@ -140,7 +137,7 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-5. Create a `.env` file in the project root directory using `.env.example` as a reference.
+5. Create a `.env` file in the project root using `.env.example` as a template, and fill in the values listed there. [Describe in one sentence what each variable is and where to get it.]
 
 6. Configure the required environment variables and test settings.
 
@@ -189,19 +186,27 @@ The framework is configured to support test execution reports and debugging arti
 
 ### Allure Report
 
-Generate Allure results:
+Run the tests (results are saved to `reports/allure-results/`):
 
 ```bash
-pytest -v --alluredir=reports/allure-results --clean-alluredir
+pytest -v
 ```
 
-Open the report:
+View the report:
 
 ```bash
 allure serve reports/allure-results
 ```
 
-The Allure Python package and Allure Commandline must be installed separately.
+**Submitted report:** The report of the last run is included as `allure-report.zip`. To view it, extract the ZIP into a folder and run:
+
+```bash
+allure open <extracted-folder>
+```
+
+Do not open `index.html` directly. The browser blocks loading the data files, and the page appears empty.
+
+Allure Commandline requires Java and is installed separately (`npm install -g allure-commandline`).
 
 ### HTML Report
 

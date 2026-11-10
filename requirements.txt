@@ -3,5 +3,4 @@ pytest-asyncio
 playwright
 PyYAML
 allure-pytest
-pytest-html
 python-dotenv
